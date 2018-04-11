@@ -1,9 +1,9 @@
 {
     "name" : "unique_egor/testbundle",
-    "description" : "Symfony3 Bundle, created for skills demo",
-    "version" : "1.0.0",
+    "description" : "Demo Symfony3 Bundle",
+    "version" : "0.9.0",
     "type" : "symfony-bundle",
-    "homepage": "https://github.com/lexxpavlov/PageBundle",
+    "homepage": "https://github.com/g905/verbose-waddle",
     "license" : "MIT",
     "keywords" : ["Money", "Money bundle"],
     "authors" : [{
@@ -33,11 +33,9 @@
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"
     },
-    "suggest": {
-        "egeloen/ckeditor-bundle": "Allow use ckeditor field"
-    },
+
     "autoload" : {
-        "psr-4" : { "Lexxpavlov\\PageBundle\\" : "" }
+        "psr-4" : { "Egor\\TestBundle\\" : "*" }
     },
     "extra" : {
         "branch-alias" : {
