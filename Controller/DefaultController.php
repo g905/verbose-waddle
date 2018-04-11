@@ -37,7 +37,7 @@ class DefaultController extends Controller
 		 $sums = 0;
 		 $template = '@EgorTest/Default/base.html.twig';
 		 $period = $request->get('period');
-		 $conf = file('../src/Egor/TestBundle/limit.conf');
+		 $conf = file($this->getParameter('limits'));
 		 
 		 foreach($conf as $value){
 			  $confs[] = explode ("=", $value);
@@ -79,7 +79,7 @@ class DefaultController extends Controller
 			 }
 			 try{
 				 $file = new Filesystem;
-			     $file->dumpFile('../src/Egor/TestBundle/limit.conf', $data__);
+			     $file->dumpFile($this->getParameter('limits'), $data__);
 			 } catch(IOExceptionInterface $exception) {
               echo "Ошибка записи ".$exception->getPath();
 			 } 
@@ -291,7 +291,7 @@ class DefaultController extends Controller
          if ($form->isSubmitted() && $form->isValid()){
 			 $data = $form->getData();
 			 //Используем собственный метод. После сабмита формы открываем файл, производим манипуляции с массивом и перезаписываем массив в файл.
-			 $category->dump_array($data, '../src/Egor/TestBundle/test', true);
+			 $category->dump_array($data, $this->getParameter('categories'), true);
 			 //Возвращаемся к категориям.
 	         return $this->redirectToRoute('egor_test_cat_show');
 		 }
@@ -309,7 +309,7 @@ class DefaultController extends Controller
 		 $categories = new Category();
 		 
 		 //Получаем массив из файла с категориями, используя собственный метод
-		 $content = $categories->make_array('../src/Egor/TestBundle/test');
+		 $content = $categories->make_array($this->getParameter('categories'));
 		 
 		 //Удаляем элемент с Ид, полученным из маршрута
 		 unset($content[$id-1]);
@@ -318,7 +318,7 @@ class DefaultController extends Controller
 		 $content = array_values($content);
 		 
 		 //Перезаписываем массив в файл категорий
-		 $categories->dump_array($content, '../src/Egor/TestBundle/test');
+		 $categories->dump_array($content, $this->getParameter('categories'));
 		 
 		 //Идем обратно
 		 return $this->redirectToRoute('egor_test_cat_show');
@@ -327,7 +327,7 @@ class DefaultController extends Controller
     //Настройка лимитов
     public function limitsAction(Request $request, $extra=null){
 		//Берем файл настроек
-		$conf = file('../src/Egor/TestBundle/limit.conf');
+		$conf = file($this->getParameter('limits'));
 		//Создаем массив из файла
 		foreach($conf as $value){
 			 $confs[] = explode ("=", $value);
@@ -349,7 +349,7 @@ class DefaultController extends Controller
 			 $data_ = 'scenario='.$data['scenario'].PHP_EOL.'current_month_limit='.$data['limit'].PHP_EOL.'next_month_limit='.$confs[2][1];
 			 try{
 				 $file = new Filesystem;
-			     $file->dumpFile('../src/Egor/TestBundle/limit.conf', $data_);
+			     $file->dumpFile($this->getParameter('limits'), $data_);
 
 			 } catch(IOExceptionInterface $exception) {
                  echo "Ошибка записи ".$exception->getPath();
