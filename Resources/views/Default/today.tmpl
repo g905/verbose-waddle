@@ -1,0 +1,30 @@
+<!--today.tmpl -->
+<h1>Расходы за сегодня</h1>
+<table class = "table table-bordered table-sm">
+<thead class = "thead-light">
+<tr scope = "row">
+    <th scope = "col">{{ knp_pagination_sortable(pagination, 'Id', '.id') }}</td>
+    <th{% if pagination.isSorted('a.Title') %} class="sorted col"{% endif %}>{{ knp_pagination_sortable(pagination, 'Дата', '.date') }}</th>
+    <th{% if pagination.isSorted('a.Title') %} class="sorted col"{% endif %}>{{ knp_pagination_sortable(pagination, 'Категория', '.category') }}</th>
+    <th{% if pagination.isSorted('a.Title') %} class="sorted col"{% endif %}>{{ knp_pagination_sortable(pagination, 'Сумма', '.sum') }}, &#8381;</th>
+    <th{% if pagination.isSorted('a.Title') %} class="sorted col"{% endif %}>{{ knp_pagination_sortable(pagination, 'Комментарий', '.comment') }}</th>
+</tr>
+</thead>
+<tbody>
+{% for number in pagination %}
+  <tr>
+      <td scope = "row">{{ number.id }}</td>
+      <td>{{ number.date|date('d M Y г.') }}</td>
+      <td>{{ number.category}}</td>
+      <td> {{ number.sum }}  </td>
+      <td>{{ number.comment }}</td>
+  </tr>
+{% endfor %}
+
+<tr scope = "row">
+<td colspan="5">
+<div class="text-justify">{{ knp_pagination_render(pagination) }}</div>
+</td>
+</tr>
+</tbody>
+</table>

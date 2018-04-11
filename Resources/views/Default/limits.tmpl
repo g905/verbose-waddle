@@ -1,0 +1,12 @@
+<!-- limits.tmpl -->
+<h1>Настройки месячного лимита</h1>
+<ul>
+<li>Текущий лимит: {{ limits }}</li>
+<li>Сценарий при превышении: {{ scenario }}</li>
+</ul>
+<div class="card card-body bg-light">
+<h2>Изменить</h2>
+{{ form_start(limit_form) }}
+{{ form_widget(limit_form) }}
+{{ form_end(limit_form) }}
+</div>

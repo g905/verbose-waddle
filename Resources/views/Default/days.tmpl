@@ -1,0 +1,40 @@
+<h1>Расходы по дням</h1>
+<!-- days.tmpl -->
+
+{% set day_summary = 0 %}
+
+<table class = "table table-bordered table-sm">
+    <thead class = "thead-light">
+        <tr scope = "row">
+            <th scope = "col"></th>
+            {% for cat in cats %}
+                <th scope = "col">{{ cat }}</th>
+            {% endfor %}
+            <th scope = "col">Всего</th>
+</tr>
+</thead>
+<tbody>
+
+{% set d = 0 %}
+{% for k, v in qdays %}
+{% if k+1 == period %}
+{% set d = v %}
+{% endif %}
+{% endfor %}
+
+{% for i in 1..d %}
+    <tr scope = "row">
+        <td>{{ i }}</td>
+{% for cat in cats %}
+        <td>{% for day, value in days %}{% for  category, sum in value %}{% if day == i and category == cat %}{{ sum }}{% set day_summary = day_summary + sum %}{% endif %}{% endfor %}{% endfor %}</td>{% endfor %}{% if day_summary != 0 %}
+        <td><b>{{ day_summary }}</b></td>{% set day_summary = 0 %}{% else %}
+        <td> -- </td>{% endif %}
+    </tr>{% endfor %}
+    <tr>
+        <td><b>Итого</b></td>
+        {% for key, value in cat_summary %}
+            <td>{{ key }}: <b>{{ value }}</b></td>
+        {% endfor %}
+    </tr>
+</tbody>
+</table>

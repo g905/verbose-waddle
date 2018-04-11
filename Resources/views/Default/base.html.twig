@@ -1,0 +1,177 @@
+{% if form is defined %}
+{% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
+{% endif %}
+{% if cat_form is defined %}
+{% form_theme cat_form 'bootstrap_4_horizontal_layout.html.twig' %}
+{% endif %}
+{% if limit_form is defined %}
+{% form_theme limit_form 'bootstrap_4_horizontal_layout.html.twig' %}
+{% endif %}
+<!--base.html.twig -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
+    <style type = "text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+            
+        }
+        body {
+            margin-bottom: 60px;
+            font-family: "Exo 2", "Arial";
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 99%;
+            height: 60px;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+  <body>
+    <div class = "container">
+      <div class = "row">
+        <div class = "col-12" id="header">
+          {% include '@EgorTest/Default/header.tmpl' %}
+        </div>
+      </div>
+      
+      {% if extra is defined %}
+      {% if scenario == 'adaptive' %}
+      {% if alert %}
+      <div class = "alert alert-danger alert-dismissible fade show" role="alert">
+          
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class = "alert-heading">Ты будешь голодать в следующем месяце</h4>
+          Месячный лимит превышен уже на <strong>{{ extra }}</strong> рублей!
+          Бюджет на следующий месяц <strong>урезан</strong> и составляет <strong>{{ limit - extra }}</strong> рублей.<br>
+          Изменить сценарий и лимит можно <a href = "/egor/db/show/limits/">здесь</a>.
+      
+      </div>
+      {% set alert = false %}
+      {% endif %}
+      {% elseif scenario == 'extending' %}
+          {% if alert %}
+      <div class = "alert alert-danger alert-dismissible fade show" role="alert">
+          
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class = "alert-heading">Ты будешь голодать уже в этом месяце</h4>
+          Месячный лимит превышен на <strong>{{ extra }}</strong> рублей!
+          Это не проблема, текущий бюджет <strong>повышен</strong> и составляет <strong>{{ limit + extra }}</strong> рублей.<br>
+          Изменить сценарий и лимит можно <a href = "/egor/db/show/limits/">здесь</a>.
+      
+      </div>
+      {% set alert = false %}
+      {% endif %}
+      {% endif %}
+      {% endif %}
+      
+      <div class = "row">
+        <div class = "col-10" id="left">
+        
+        {% if period is defined %}
+        
+            {% if period == 'today' %}
+        
+                {% include '@EgorTest/Default/today.tmpl' %}
+        
+            {% endif %}
+            
+            {% if period == 'month' %}
+        
+                {% include '@EgorTest/Default/month.tmpl' %}
+        
+            {% endif %}
+            
+            {% if period matches '{^[0-9]{1,2}$}' %}
+        
+                {% include '@EgorTest/Default/days.tmpl' %}
+        
+            {% endif %}
+        
+            {% if period == '' %}
+        
+                {% include '@EgorTest/Default/All.tmpl' %}
+        
+            {% endif %}
+
+        {% endif %}
+        
+        {% if sum is defined %}
+            <div class="card card-body bg-light">Всего: {{ sum }} р. Лимит: {{ limit }}</div>
+        {% endif %}
+        
+        {% if limits is defined %}
+
+                {% include '@EgorTest/Default/limits.tmpl' %}
+                
+            {% endif %}
+        &nbsp;
+
+{% if form is defined %}
+<div class="card card-body bg-light">
+<h2>Добавить расход</h2>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    
+</div>
+
+
+
+{% endif %}
+
+{% if cat is defined %}
+
+    {% include '@EgorTest/Default/edit_cat.tmpl' %}
+
+{% endif %}
+
+        </div>
+        <div class = "col-2" id="right">
+
+        <h2>Настройки</h2>
+<p><a href = "/egor/db/cat/">Категории</a></p>
+<p><a href = "/egor/db/show/limits/">Лимит Расходов</a></p>
+        </div>
+        
+      </div>
+      
+      <div class = "row">
+        
+      </div>
+      
+    </div>
+    
+    <div class = "footer">
+          &copy; 2018
+        </div>
+
+    
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap JS -->    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script>
+    $(function () {
+        $('[data-toggle="popover"]').popover({trigger:'hover'});
+    });
+</script>
+  </body>
+</html>

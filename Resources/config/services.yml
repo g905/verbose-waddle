@@ -1,0 +1,4 @@
+services:
+#    egor_test.example:
+#        class: Egor\TestBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

@@ -1,0 +1,31 @@
+egor_test_homepage:
+    path:     /
+    defaults: { _controller: EgorTestBundle:Default:index }
+    
+egor_test_show_all:
+    path: /db/show/
+    defaults: { _controller: EgorTestBundle:Default:show_all}
+    
+egor_test_cat_show:
+    path: /db/cat/
+    defaults: { _controller: EgorTestBundle:Default:categories }
+    
+egor_test_cat_add:
+    path: /db/cat/add
+    defaults: { _controller: EgorTestBundle:Default:add_category }
+    
+egor_test_cat_del:
+    path: /db/cat/del/{id}
+    defaults: { _controller: EgorTestBundle:Default:del_category }
+    
+egor_test_db_show:
+    path: /db/show/{period}
+    defaults: { _controller: EgorTestBundle:Default:show_all, period: null}
+    
+egor_test_db_show:
+    path: /db/show/{id}
+    defaults: { _controller: EgorTestBundle:Default:show }
+    
+egor_test_db_limits:
+    path: /db/show/limits/
+    defaults: { _controller: EgorTestBundle:Default:limits }

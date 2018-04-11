@@ -1,0 +1,31 @@
+<!--month.tmpl -->
+<h1>Расходы по месяцам</h1>
+{% if sums is defined %}
+
+    {% set months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %}
+
+    <table class = "table table-bordered table-sm">
+        <thead class = "thead-light">
+            <tr>
+                <th scope = "row">Месяц</th>
+                <th>Расход, &#8381;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in 1..12 %}
+                {% if sums[i] is defined %}
+                    {% if sums[i] >= limit %}
+                        <tr class = "table-warning" scope == "row">
+                    {% else %}
+                    <tr scope == "row">
+                    {% endif %}
+                        <td><a href = '/egor/db/show/{{ i }}'>{{ months[i-1] }}</a></td><td> {{ sums[i] }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ months[i-1] }}</td><td> -- </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+     </table>
+{% endif %}

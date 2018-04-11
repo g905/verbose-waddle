@@ -1,0 +1,31 @@
+<!-- edit_cat.tmpl -->
+<h1>Категории расходов</h1>
+<table class = "table table-sm table-bordered">
+<thead class = "thead-light">
+<tr scope = "row">
+<th>
+Категория
+</th>
+<th>
+&nbsp;
+</th>
+</tr>
+</thead>
+<tbody>
+
+    {% for str in cat %}
+        <tr scope = "row">
+            <td>{{ str }}</td>
+            <td><a href = "/egor/db/cat/del/{{ loop.index }}">Удалить</a></td>
+        <tr>
+    {% endfor %}
+</tbody>
+</table>
+
+{% if cat_form is defined %}
+<div class="card card-body bg-light">
+    {{ form_start(cat_form) }}
+    {{ form_widget(cat_form) }}
+    {{ form_end(cat_form) }}
+</div>
+{% endif %}

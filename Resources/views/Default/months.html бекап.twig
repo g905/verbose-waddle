@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Операции</title>
+</head>
+<body style = "font-family: arial; font-size: 14px">
+
+<p>Записи по месяцам</p>
+
+{% if sums is defined %}
+
+{% set months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'] %}
+
+<table border="1px" style="width: 800px; border:1px solid black; text-align: center">
+<thead>
+<tr>
+<td>Месяц</td><td>Расход</td>
+</tr>
+</thead>
+<tbody>
+{% for i in 1..12 %}
+{% if sums[i] is defined %}
+<tr>
+<td><a href = /db/show/{{ i }}>{{ months[i-1] }}</a></td><td>&#8381; {{ sums[i] }}</td>
+</tr>
+{% else %}
+<tr>
+<td>{{ months[i-1] }}</td><td>&#8381; -- </td>
+</tr>
+{% endif %}
+{% endfor %}
+
+{% endif %}
+
+<span><a href = "/db/show/">Все расходы</a></span>
+<span><a href = "/db/show/today">  За сегодня</a></span>
+<span><a href = "/db/show/month">  По месяцам</a></span><br>
+<a href = "/db/cat/">Категории</a>
+
+<div class="navigation">
+
+<table border="1px" style="font-size: 14px; width: 800px; border:1px solid black; text-align: center">
+<thead>
+<tr>
+    <td>{{ knp_pagination_sortable(pagination, 'Id', '.id') }}</td>
+    <td{% if pagination.isSorted('a.Title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Дата', '.date') }}</td>
+    <td{% if pagination.isSorted('a.Title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Категория', '.category') }}</td>
+    <td{% if pagination.isSorted('a.Title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Сумма', '.sum') }}</td>
+    <td{% if pagination.isSorted('a.Title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Комментарий', '.comment') }}</td>
+</tr>
+</thead>
+<tbody>
+{% for number in pagination %}
+  <tr>
+      <td>{{ number.id }}</td>
+      <td>{{ number.date|date('d M Y г.') }}</td>
+      <td>{{ number.category}}</td>
+      <td> {{ number.sum }} &#8381 </td>
+      <td>{{ number.comment }}</td>
+  </tr>
+{% endfor %}
+
+
+
+<tr><td colspan="5"><div class="navigation">{{ knp_pagination_render(pagination) }}</div></td></tr>
+
+{% if sum is defined %}
+<tr>
+<td colspan = '4'>Всего: </td><td>{{ sum }} р.</td>
+</tr>
+{% endif %}
+{% if form is defined %}
+<tr><td colspan="5">
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+</td></tr>
+{% endif %}
+
+</tbody>
+</table>
+</div>
+
+{% if cat is defined %}
+{% for str in cat %}
+{{ str }}<span style="color: blue; font-size: 10px"><a href = "/db/cat/del/{{ loop.index }}">Удалить</a></span><br>
+{% endfor %}
+{% endif %}
+<hr>
+{% if cat_form is defined %}
+<tr><td colspan="5">
+{{ form_start(cat_form) }}
+{{ form_widget(cat_form) }}
+{{ form_end(cat_form) }}
+</td></tr>
+{% endif %}
+
+</body>
+</html>
