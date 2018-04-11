@@ -1,5 +1,5 @@
 {
-    "name" : "Egor/Testbundle",
+    "name" : "unique_egor/testbundle",
     "description" : "Symfony3 Bundle, created for skills demo",
     "version" : "1.0.0",
     "type" : "symfony-bundle",
