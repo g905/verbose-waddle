@@ -25,7 +25,7 @@ class EgorTestExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         
-        $container->setParameter('egor_test.limits_', '%kernel.project_dir%/vendor/Egorzz/TestBundle/limit.conf');
-        $container->setParameter('egor_test.categories_', '%kernel.project_dir%/vendor/Egorzz/TestBundle/test');
+        $container->setParameter('egor_test.limits_', '%kernel.project_dir%/vendor/egorzz/testbundle/limit.conf');
+        $container->setParameter('egor_test.categories_', '%kernel.project_dir%/vendor/egorzz/testbundle/test');
     }
 }

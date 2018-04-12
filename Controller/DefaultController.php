@@ -57,7 +57,7 @@ class DefaultController extends Controller
          $m = $m->format('m');
 
          $c = $repository->createQueryBuilder('p')
-                         ->where("month(p.date)*1 = ".$m)
+                         ->where("STRFTIME('%m', p.date) = ".$m)
                          ->getQuery();
              
              $quer = $c->getResult();
