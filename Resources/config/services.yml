@@ -1,4 +1,7 @@
 services:
-#    egor_test.example:
-#        class: Egor\TestBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    Egor.TestBundle.Controller.DefaultController.egor_test:
+        class: Egor\TestBundle\Controller\DefaultController
+        arguments: ["%egor_test.limits_%"]
+        arguments: ["%egor_test.categories_%"]
+        
+        
