@@ -15,7 +15,7 @@ class ExpendType extends AbstractType
 	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$data = file('../src/Egor/TestBundle/test');
+		$data = file('../vendor/egorzz/testbundle/test');
 		$d = array();
 		foreach($data as $line=>$line_num){$d[$line_num]=trim($line_num);}
 
