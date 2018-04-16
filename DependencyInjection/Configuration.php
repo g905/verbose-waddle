@@ -26,11 +26,14 @@ class Configuration implements ConfigurationInterface
         
         $rootNode
             ->children()
-                ->scalarNode('limits_')
+                ->scalarNode('scenario')
                     ->cannotBeEmpty()
                 ->end()
-                ->scalarNode('categories_')
-                    ->cannotBeEmpty()
+                ->floatNode('current_month_limit')
+                    ->defaultValue(5000)
+                ->end()
+                ->floatNode('next_month_limit')
+                    ->defaultValue(5000)
                 ->end()
             ->end()
         ;

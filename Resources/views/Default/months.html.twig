@@ -32,10 +32,10 @@
 
 {% endif %}
 
-<span><a href = "/egor/db/show/">Все расходы</a></span>
-<span><a href = "/egor/db/show/today">  За сегодня</a></span>
-<span><a href = "/egor/db/show/month">  По месяцам</a></span><br>
-<a href = "/egor/db/cat/">Категории</a>
+<span><a href = "/db/show/">Все расходы</a></span>
+<span><a href = "/db/show/today">  За сегодня</a></span>
+<span><a href = "/db/show/month">  По месяцам</a></span><br>
+<a href = "/db/cat/">Категории</a>
 
 <div class="navigation">
 
@@ -83,7 +83,7 @@
 
 {% if cat is defined %}
 {% for str in cat %}
-{{ str }}<span style="color: blue; font-size: 10px"><a href = "/egor/db/cat/del/{{ loop.index }}">Удалить</a></span><br>
+{{ str }}<span style="color: blue; font-size: 10px"><a href = "/db/cat/del/{{ loop.index }}">Удалить</a></span><br>
 {% endfor %}
 {% endif %}
 <hr>

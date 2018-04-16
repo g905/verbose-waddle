@@ -1,7 +1,7 @@
 services:
-    Egor.TestBundle.Controller.DefaultController.egor_test:
-        class: Egor\TestBundle\Controller\DefaultController
-        arguments: ["%egor_test.limits_%"]
-        arguments: ["%egor_test.categories_%"]
+    #Egor.TestBundle.Controller.DefaultController:
+     #   class: Egor\TestBundle\Controller\DefaultController
+      #  arguments: ["%egor_test.limits%"]
+       # arguments: ["%egor_test.categories%"]
         
         

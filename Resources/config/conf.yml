@@ -1,0 +1,4 @@
+egor_test:
+    scenario: adaptive
+    current_month_limit: 5000
+    next_month_limit: 5000

@@ -30,6 +30,7 @@ class DefaultController extends Controller
 
     public function show_allAction(Request $request)
 	 {
+		//echo $this->container->getParameter('current_month_limit');
 		 $operations = array();
 		 $days = array();
 		 $cats = array();
@@ -37,7 +38,7 @@ class DefaultController extends Controller
 		 $sums = 0;
 		 $template = '@EgorTest/Default/base.html.twig';
 		 $period = $request->get('period');
-		 $conf = file($this->container->getParameter('egor_test.limits_'));
+		 $conf = file('../src/Egor/TestBundle/limit.conf');
 		 
 		 foreach($conf as $value){
 			  $confs[] = explode ("=", $value);
@@ -56,22 +57,26 @@ class DefaultController extends Controller
          $m = new \DateTime('today');
          $m = $m->format('m');
 
-         $c = $repository->createQueryBuilder('p')
-                         ->where("STRFTIME('%m', p.date) = ".$m)
-                         ->getQuery();
+		$em = $this->getDoctrine()->getManager();
+
+        $RAW_QUERY = "SELECT * FROM money WHERE STRFTIME('%m', date)*1 = ".$m;
+        
+        $statement = $em->getConnection()->prepare($RAW_QUERY);
+        $statement->execute();
+
+        $result = $statement->fetchAll();
              
-             $quer = $c->getResult();
+             $quer = $result;
              $current_sum = 0;
              foreach($quer as $key => $val) {
-				 $current_sum += $val->getSum();
+				 $current_sum += (real)$val['sum'];
 			 }
-
+			 
          if($current_sum > $limit){
 			 $extra = ($current_sum-$limit);
 			 if($scenario == 'adaptive'){
 				 if($diff == $extra){$alert = false;} else {$alert = true;}
-				 $data__ = 'scenario='.$scenario.PHP_EOL.'current_month_limit='.$limit.PHP_EOL.'next_month_limit='.($limit-$extra);
-                 
+				 $data__ = 'scenario='.$scenario.PHP_EOL.'current_month_limit='.$limit.PHP_EOL.'next_month_limit='.($limit-$extra);                 
 
 			 } elseif($scenario == 'extending'){
 				 $data__ = 'scenario='.$scenario.PHP_EOL.'current_month_limit='.($limit+$extra).PHP_EOL.'next_month_limit='.($limit+$extra);
@@ -79,7 +84,7 @@ class DefaultController extends Controller
 			 }
 			 try{
 				 $file = new Filesystem;
-			     $file->dumpFile($this->container->getParameter('egor_test.limits_'), $data__);
+			     $file->dumpFile('../src/Egor/TestBundle/limit.conf', $data__);
 			 } catch(IOExceptionInterface $exception) {
               echo "Ошибка записи ".$exception->getPath();
 			 } 
@@ -130,7 +135,7 @@ class DefaultController extends Controller
 						 
 			   } else {
 				   
-				   $per = $period*1;
+				   $per = (real)$period;
                      //Если указан период в виде цифры месяца, то выбираем записи за данный месяц
                      $query = $repository->createQueryBuilder('p')
                          ->Where("month(p.date)*1 =".$period)
@@ -291,7 +296,7 @@ class DefaultController extends Controller
          if ($form->isSubmitted() && $form->isValid()){
 			 $data = $form->getData();
 			 //Используем собственный метод. После сабмита формы открываем файл, производим манипуляции с массивом и перезаписываем массив в файл.
-			 $category->dump_array($data, $this->container->getParameter('egor_test.categories_'), true);
+			 $category->dump_array($data,'../src/Egor/TestBundle/test', true);
 			 //Возвращаемся к категориям.
 	         return $this->redirectToRoute('egor_test_cat_show');
 		 }
@@ -309,7 +314,7 @@ class DefaultController extends Controller
 		 $categories = new Category();
 		 
 		 //Получаем массив из файла с категориями, используя собственный метод
-		 $content = $categories->make_array($this->container->getParameter('egor_test.categories_'));
+		 $content = $categories->make_array('../src/Egor/TestBundle/test');
 		 
 		 //Удаляем элемент с Ид, полученным из маршрута
 		 unset($content[$id-1]);
@@ -318,7 +323,7 @@ class DefaultController extends Controller
 		 $content = array_values($content);
 		 
 		 //Перезаписываем массив в файл категорий
-		 $categories->dump_array($content, $this->container->getParameter('egor_test.categories_'));
+		 $categories->dump_array($content, '../src/Egor/TestBundle/test');
 		 
 		 //Идем обратно
 		 return $this->redirectToRoute('egor_test_cat_show');
@@ -327,7 +332,7 @@ class DefaultController extends Controller
     //Настройка лимитов
     public function limitsAction(Request $request, $extra=null){
 		//Берем файл настроек
-		$conf = file($this->container->getParameter('egor_test.limits_'));
+		$conf = file('../src/Egor/TestBundle/limit.conf');
 		//Создаем массив из файла
 		foreach($conf as $value){
 			 $confs[] = explode ("=", $value);
@@ -349,7 +354,7 @@ class DefaultController extends Controller
 			 $data_ = 'scenario='.$data['scenario'].PHP_EOL.'current_month_limit='.$data['limit'].PHP_EOL.'next_month_limit='.$confs[2][1];
 			 try{
 				 $file = new Filesystem;
-			     $file->dumpFile($this->container->getParameter('egor_test.limits_'), $data_);
+			     $file->dumpFile('../src/Egor/TestBundle/limit.conf', $data_);
 
 			 } catch(IOExceptionInterface $exception) {
                  echo "Ошибка записи ".$exception->getPath();
